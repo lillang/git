@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbDeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbDevice" >
+    <id column="device_id" property="deviceId" jdbcType="BIGINT" />
+    <result column="device_account" property="deviceAccount" jdbcType="VARCHAR" />
+    <result column="device_bank" property="deviceBank" jdbcType="VARCHAR" />
+    <result column="device_address" property="deviceAddress" jdbcType="VARCHAR" />
+    <result column="device_detailed" property="deviceDetailed" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    device_id, device_account, device_bank, device_address, device_detailed
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbDeviceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_device
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_device
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectAll" resultType="java.util.HashMap">
+  	select  <include refid="Base_Column_List" />  from tb_device
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_device
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.counterfeit.pojo.TbDeviceExample" >
+    delete from tb_device
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbDevice" >
+    insert into tb_device (device_id, device_account, device_bank, 
+      device_address, device_detailed)
+    values (#{deviceId,jdbcType=BIGINT}, #{deviceAccount,jdbcType=VARCHAR}, #{deviceBank,jdbcType=VARCHAR}, 
+      #{deviceAddress,jdbcType=VARCHAR}, #{deviceDetailed,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbDevice" >
+    insert into tb_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deviceId != null" >
+        device_id,
+      </if>
+      <if test="deviceAccount != null" >
+        device_account,
+      </if>
+      <if test="deviceBank != null" >
+        device_bank,
+      </if>
+      <if test="deviceAddress != null" >
+        device_address,
+      </if>
+      <if test="deviceDetailed != null" >
+        device_detailed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="deviceAccount != null" >
+        #{deviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceBank != null" >
+        #{deviceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceAddress != null" >
+        #{deviceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceDetailed != null" >
+        #{deviceDetailed,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbDeviceExample" resultType="java.lang.Integer" >
+    select count(*) from tb_device
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_device
+    <set >
+      <if test="record.deviceId != null" >
+        device_id = #{record.deviceId,jdbcType=BIGINT},
+      </if>
+      <if test="record.deviceAccount != null" >
+        device_account = #{record.deviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceBank != null" >
+        device_bank = #{record.deviceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceAddress != null" >
+        device_address = #{record.deviceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceDetailed != null" >
+        device_detailed = #{record.deviceDetailed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_device
+    set device_id = #{record.deviceId,jdbcType=BIGINT},
+      device_account = #{record.deviceAccount,jdbcType=VARCHAR},
+      device_bank = #{record.deviceBank,jdbcType=VARCHAR},
+      device_address = #{record.deviceAddress,jdbcType=VARCHAR},
+      device_detailed = #{record.deviceDetailed,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbDevice" >
+    update tb_device
+    <set >
+      <if test="deviceAccount != null" >
+        device_account = #{deviceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceBank != null" >
+        device_bank = #{deviceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceAddress != null" >
+        device_address = #{deviceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceDetailed != null" >
+        device_detailed = #{deviceDetailed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbDevice" >
+    update tb_device
+    set device_account = #{deviceAccount,jdbcType=VARCHAR},
+      device_bank = #{deviceBank,jdbcType=VARCHAR},
+      device_address = #{deviceAddress,jdbcType=VARCHAR},
+      device_detailed = #{deviceDetailed,jdbcType=VARCHAR}
+    where device_id = #{deviceId,jdbcType=BIGINT}
+  </update>
+</mapper>

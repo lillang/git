@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbMenu" >
+    <id column="menu_id" property="menuId" jdbcType="BIGINT" />
+    <result column="menu_parentid" property="menuParentid" jdbcType="BIGINT" />
+    <result column="menu_text" property="menuText" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="menu_iconcls" property="menuIconcls" jdbcType="VARCHAR" />
+    <result column="menu_status" property="menuStatus" jdbcType="INTEGER" />
+    <result column="menu_ichecked" property="menuIchecked" jdbcType="INTEGER" />
+    <result column="menu_sortno" property="menuSortno" jdbcType="INTEGER" />
+    <result column="menu_isusing" property="menuIsusing" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    menu_id, menu_parentid, menu_text, menu_url, menu_iconcls, menu_status, menu_ichecked, 
+    menu_sortno, menu_isusing
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbMenuExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_menu
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_menu
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.counterfeit.pojo.TbMenuExample" >
+    delete from tb_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbMenu" >
+    insert into tb_menu (menu_id, menu_parentid, menu_text, 
+      menu_url, menu_iconcls, menu_status, 
+      menu_ichecked, menu_sortno, menu_isusing
+      )
+    values (#{menuId,jdbcType=BIGINT}, #{menuParentid,jdbcType=BIGINT}, #{menuText,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{menuIconcls,jdbcType=VARCHAR}, #{menuStatus,jdbcType=INTEGER}, 
+      #{menuIchecked,jdbcType=INTEGER}, #{menuSortno,jdbcType=INTEGER}, #{menuIsusing,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbMenu" >
+    insert into tb_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="menuParentid != null" >
+        menu_parentid,
+      </if>
+      <if test="menuText != null" >
+        menu_text,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="menuIconcls != null" >
+        menu_iconcls,
+      </if>
+      <if test="menuStatus != null" >
+        menu_status,
+      </if>
+      <if test="menuIchecked != null" >
+        menu_ichecked,
+      </if>
+      <if test="menuSortno != null" >
+        menu_sortno,
+      </if>
+      <if test="menuIsusing != null" >
+        menu_isusing,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="menuParentid != null" >
+        #{menuParentid,jdbcType=BIGINT},
+      </if>
+      <if test="menuText != null" >
+        #{menuText,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconcls != null" >
+        #{menuIconcls,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        #{menuStatus,jdbcType=INTEGER},
+      </if>
+      <if test="menuIchecked != null" >
+        #{menuIchecked,jdbcType=INTEGER},
+      </if>
+      <if test="menuSortno != null" >
+        #{menuSortno,jdbcType=INTEGER},
+      </if>
+      <if test="menuIsusing != null" >
+        #{menuIsusing,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbMenuExample" resultType="java.lang.Integer" >
+    select count(*) from tb_menu
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_menu
+    <set >
+      <if test="record.menuId != null" >
+        menu_id = #{record.menuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.menuParentid != null" >
+        menu_parentid = #{record.menuParentid,jdbcType=BIGINT},
+      </if>
+      <if test="record.menuText != null" >
+        menu_text = #{record.menuText,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuUrl != null" >
+        menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuIconcls != null" >
+        menu_iconcls = #{record.menuIconcls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuStatus != null" >
+        menu_status = #{record.menuStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.menuIchecked != null" >
+        menu_ichecked = #{record.menuIchecked,jdbcType=INTEGER},
+      </if>
+      <if test="record.menuSortno != null" >
+        menu_sortno = #{record.menuSortno,jdbcType=INTEGER},
+      </if>
+      <if test="record.menuIsusing != null" >
+        menu_isusing = #{record.menuIsusing,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_menu
+    set menu_id = #{record.menuId,jdbcType=BIGINT},
+      menu_parentid = #{record.menuParentid,jdbcType=BIGINT},
+      menu_text = #{record.menuText,jdbcType=VARCHAR},
+      menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      menu_iconcls = #{record.menuIconcls,jdbcType=VARCHAR},
+      menu_status = #{record.menuStatus,jdbcType=INTEGER},
+      menu_ichecked = #{record.menuIchecked,jdbcType=INTEGER},
+      menu_sortno = #{record.menuSortno,jdbcType=INTEGER},
+      menu_isusing = #{record.menuIsusing,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbMenu" >
+    update tb_menu
+    <set >
+      <if test="menuParentid != null" >
+        menu_parentid = #{menuParentid,jdbcType=BIGINT},
+      </if>
+      <if test="menuText != null" >
+        menu_text = #{menuText,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIconcls != null" >
+        menu_iconcls = #{menuIconcls,jdbcType=VARCHAR},
+      </if>
+      <if test="menuStatus != null" >
+        menu_status = #{menuStatus,jdbcType=INTEGER},
+      </if>
+      <if test="menuIchecked != null" >
+        menu_ichecked = #{menuIchecked,jdbcType=INTEGER},
+      </if>
+      <if test="menuSortno != null" >
+        menu_sortno = #{menuSortno,jdbcType=INTEGER},
+      </if>
+      <if test="menuIsusing != null" >
+        menu_isusing = #{menuIsusing,jdbcType=INTEGER},
+      </if>
+    </set>
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbMenu" >
+    update tb_menu
+    set menu_parentid = #{menuParentid,jdbcType=BIGINT},
+      menu_text = #{menuText,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      menu_iconcls = #{menuIconcls,jdbcType=VARCHAR},
+      menu_status = #{menuStatus,jdbcType=INTEGER},
+      menu_ichecked = #{menuIchecked,jdbcType=INTEGER},
+      menu_sortno = #{menuSortno,jdbcType=INTEGER},
+      menu_isusing = #{menuIsusing,jdbcType=INTEGER}
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!-- 自定义sql -->
+   <select id="selectByRole" resultMap="BaseResultMap">
+   select tm.menu_id,tm.menu_parentid,tm.menu_text,tm.menu_url,tm.menu_iconcls,tm.menu_status,tm.menu_ichecked,tm.menu_sortno,tm.menu_isusing from tb_menu tm 
+	inner JOIN tb_right tr on tm.menu_id=tr.right_menuid
+	INNER JOIN tb_permission tp on tr.right_id=tp.permission_rightid
+	<where>
+    	and tm.menu_isusing=1
+    	and tp.permission_roleid = #{roleid,jdbcType=BIGINT}
+    	<if test="parentId != null">
+    		AND tm.menu_parentid = #{parentId,jdbcType=BIGINT}
+    	</if>
+    	<if test="parentId == null">
+    		AND tm.menu_parentid is null
+    	</if>
+    </where>
+    order by tm.menu_sortno asc
+  </select>
+  
+</mapper>

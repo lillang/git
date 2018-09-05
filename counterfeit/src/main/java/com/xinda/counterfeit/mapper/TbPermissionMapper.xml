@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbPermission" >
+    <id column="permission_id" property="permissionId" jdbcType="BIGINT" />
+    <result column="permission_roleid" property="permissionRoleid" jdbcType="BIGINT" />
+    <result column="permission_rightid" property="permissionRightid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    permission_id, permission_roleid, permission_rightid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbPermissionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_permission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_permission
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_permission
+    where permission_roleid= #{roleid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="java.lang.Long" >
+    delete from tb_permission
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbPermission" >
+    insert into tb_permission (permission_id, permission_roleid, permission_rightid
+      )
+    values (#{permissionId,jdbcType=BIGINT}, #{permissionRoleid,jdbcType=BIGINT}, #{permissionRightid,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbPermission" >
+    insert into tb_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="permissionRoleid != null" >
+        permission_roleid,
+      </if>
+      <if test="permissionRightid != null" >
+        permission_rightid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=BIGINT},
+      </if>
+      <if test="permissionRoleid != null" >
+        #{permissionRoleid,jdbcType=BIGINT},
+      </if>
+      <if test="permissionRightid != null" >
+        #{permissionRightid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbPermissionExample" resultType="java.lang.Integer" >
+    select count(*) from tb_permission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_permission
+    <set >
+      <if test="record.permissionId != null" >
+        permission_id = #{record.permissionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.permissionRoleid != null" >
+        permission_roleid = #{record.permissionRoleid,jdbcType=BIGINT},
+      </if>
+      <if test="record.permissionRightid != null" >
+        permission_rightid = #{record.permissionRightid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_permission
+    set permission_id = #{record.permissionId,jdbcType=BIGINT},
+      permission_roleid = #{record.permissionRoleid,jdbcType=BIGINT},
+      permission_rightid = #{record.permissionRightid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbPermission" >
+    update tb_permission
+    <set >
+      <if test="permissionRoleid != null" >
+        permission_roleid = #{permissionRoleid,jdbcType=BIGINT},
+      </if>
+      <if test="permissionRightid != null" >
+        permission_rightid = #{permissionRightid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbPermission" >
+    update tb_permission
+    set permission_roleid = #{permissionRoleid,jdbcType=BIGINT},
+      permission_rightid = #{permissionRightid,jdbcType=BIGINT}
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!--   自定义sql -->
+  <select id="selectByRoleidAndCode" resultMap="BaseResultMap" >
+  	select *
+    from tb_permission tp inner join tb_right tr on tp.permission_rightid = tr.right_id 
+    where tp.permission_roleid = #{userRoleid, jdbcType=INTEGER} and tr.right_name = #{permissionCode, jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByParam" parameterType="Map" resultType="java.util.HashMap">
+  	select distinct r.right_id,r.right_parentid,r.right_name,r.right_sort,if(isnull(p.permission_rightid),0,1) as state
+    from tb_right r left join tb_permission p on r.right_id = p.permission_rightid 
+  	<if test="roleid !=0">
+    and p.permission_roleid =#{roleid, jdbcType=INTEGER}
+	</if>
+    order by r.right_id, r.right_sort
+  </select>
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+  	delete from tb_permission where permission_roleid= #{roleid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertParam" keyProperty="id" useGeneratedKeys="true">
+   	insert into tb_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rightid != null">
+        permission_rightid,
+      </if>
+      <if test="roleid != null">
+        permission_roleid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        #{rightid,jdbcType=INTEGER},
+      </if>
+      <if test="rightid != null">
+        #{roleid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectByRolesId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		select count(*) from tb_permission where permission_roleid= #{roleid,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbOperatelogMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbOperatelog" >
+    <id column="operatelog_id" property="operatelogId" jdbcType="BIGINT" />
+    <result column="operatelog_createdate" property="operatelogCreatedate" jdbcType="BIGINT" />
+    <result column="operatelog_ipaddr" property="operatelogIpaddr" jdbcType="VARCHAR" />
+    <result column="operatelog_logtype" property="operatelogLogtype" jdbcType="VARCHAR" />
+    <result column="operatelog_result" property="operatelogResult" jdbcType="VARCHAR" />
+    <result column="operatelog_username" property="operatelogUsername" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.xinda.counterfeit.pojo.TbOperatelog" extends="BaseResultMap" >
+    <result column="operatelog_logmessage" property="operatelogLogmessage" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    operatelog_id, operatelog_createdate, operatelog_ipaddr, operatelog_logtype, operatelog_result, 
+    operatelog_username
+  </sql>
+  <sql id="Blob_Column_List" >
+    operatelog_logmessage
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.xinda.counterfeit.pojo.TbOperatelogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_operatelog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbOperatelogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_operatelog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_operatelog
+    where operatelog_id = #{operatelogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_operatelog
+    where operatelog_id = #{operatelogId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.counterfeit.pojo.TbOperatelogExample" >
+    delete from tb_operatelog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbOperatelog" >
+    insert into tb_operatelog (operatelog_id, operatelog_createdate, 
+      operatelog_ipaddr, operatelog_logtype, operatelog_result, 
+      operatelog_username, operatelog_logmessage
+      )
+    values (#{operatelogId,jdbcType=BIGINT}, #{operatelogCreatedate,jdbcType=BIGINT}, 
+      #{operatelogIpaddr,jdbcType=VARCHAR}, #{operatelogLogtype,jdbcType=VARCHAR}, #{operatelogResult,jdbcType=VARCHAR}, 
+      #{operatelogUsername,jdbcType=VARCHAR}, #{operatelogLogmessage,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbOperatelog" >
+    insert into tb_operatelog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operatelogId != null" >
+        operatelog_id,
+      </if>
+      <if test="operatelogCreatedate != null" >
+        operatelog_createdate,
+      </if>
+      <if test="operatelogIpaddr != null" >
+        operatelog_ipaddr,
+      </if>
+      <if test="operatelogLogtype != null" >
+        operatelog_logtype,
+      </if>
+      <if test="operatelogResult != null" >
+        operatelog_result,
+      </if>
+      <if test="operatelogUsername != null" >
+        operatelog_username,
+      </if>
+      <if test="operatelogLogmessage != null" >
+        operatelog_logmessage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operatelogId != null" >
+        #{operatelogId,jdbcType=BIGINT},
+      </if>
+      <if test="operatelogCreatedate != null" >
+        #{operatelogCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="operatelogIpaddr != null" >
+        #{operatelogIpaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogLogtype != null" >
+        #{operatelogLogtype,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogResult != null" >
+        #{operatelogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogUsername != null" >
+        #{operatelogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogLogmessage != null" >
+        #{operatelogLogmessage,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbOperatelogExample" resultType="java.lang.Integer" >
+    select count(*) from tb_operatelog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_operatelog
+    <set >
+      <if test="record.operatelogId != null" >
+        operatelog_id = #{record.operatelogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operatelogCreatedate != null" >
+        operatelog_createdate = #{record.operatelogCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="record.operatelogIpaddr != null" >
+        operatelog_ipaddr = #{record.operatelogIpaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatelogLogtype != null" >
+        operatelog_logtype = #{record.operatelogLogtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatelogResult != null" >
+        operatelog_result = #{record.operatelogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatelogUsername != null" >
+        operatelog_username = #{record.operatelogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatelogLogmessage != null" >
+        operatelog_logmessage = #{record.operatelogLogmessage,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tb_operatelog
+    set operatelog_id = #{record.operatelogId,jdbcType=BIGINT},
+      operatelog_createdate = #{record.operatelogCreatedate,jdbcType=BIGINT},
+      operatelog_ipaddr = #{record.operatelogIpaddr,jdbcType=VARCHAR},
+      operatelog_logtype = #{record.operatelogLogtype,jdbcType=VARCHAR},
+      operatelog_result = #{record.operatelogResult,jdbcType=VARCHAR},
+      operatelog_username = #{record.operatelogUsername,jdbcType=VARCHAR},
+      operatelog_logmessage = #{record.operatelogLogmessage,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_operatelog
+    set operatelog_id = #{record.operatelogId,jdbcType=BIGINT},
+      operatelog_createdate = #{record.operatelogCreatedate,jdbcType=BIGINT},
+      operatelog_ipaddr = #{record.operatelogIpaddr,jdbcType=VARCHAR},
+      operatelog_logtype = #{record.operatelogLogtype,jdbcType=VARCHAR},
+      operatelog_result = #{record.operatelogResult,jdbcType=VARCHAR},
+      operatelog_username = #{record.operatelogUsername,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbOperatelog" >
+    update tb_operatelog
+    <set >
+      <if test="operatelogCreatedate != null" >
+        operatelog_createdate = #{operatelogCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="operatelogIpaddr != null" >
+        operatelog_ipaddr = #{operatelogIpaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogLogtype != null" >
+        operatelog_logtype = #{operatelogLogtype,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogResult != null" >
+        operatelog_result = #{operatelogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogUsername != null" >
+        operatelog_username = #{operatelogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="operatelogLogmessage != null" >
+        operatelog_logmessage = #{operatelogLogmessage,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where operatelog_id = #{operatelogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xinda.counterfeit.pojo.TbOperatelog" >
+    update tb_operatelog
+    set operatelog_createdate = #{operatelogCreatedate,jdbcType=BIGINT},
+      operatelog_ipaddr = #{operatelogIpaddr,jdbcType=VARCHAR},
+      operatelog_logtype = #{operatelogLogtype,jdbcType=VARCHAR},
+      operatelog_result = #{operatelogResult,jdbcType=VARCHAR},
+      operatelog_username = #{operatelogUsername,jdbcType=VARCHAR},
+      operatelog_logmessage = #{operatelogLogmessage,jdbcType=LONGVARCHAR}
+    where operatelog_id = #{operatelogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbOperatelog" >
+    update tb_operatelog
+    set operatelog_createdate = #{operatelogCreatedate,jdbcType=BIGINT},
+      operatelog_ipaddr = #{operatelogIpaddr,jdbcType=VARCHAR},
+      operatelog_logtype = #{operatelogLogtype,jdbcType=VARCHAR},
+      operatelog_result = #{operatelogResult,jdbcType=VARCHAR},
+      operatelog_username = #{operatelogUsername,jdbcType=VARCHAR}
+    where operatelog_id = #{operatelogId,jdbcType=BIGINT}
+  </update>
+</mapper>

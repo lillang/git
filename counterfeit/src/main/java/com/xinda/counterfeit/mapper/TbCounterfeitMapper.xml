@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbCounterfeitMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbCounterfeit" >
+    <id column="counterfeit_id" property="counterfeitId" jdbcType="BIGINT" />
+    <result column="counterfeit_serialnum" property="counterfeitSerialnum" jdbcType="VARCHAR" />
+    <result column="counterfeit_createdate" property="counterfeitCreatedate" jdbcType="BIGINT" />
+    <result column="counterfeit_deviceid" property="counterfeitDeviceid" jdbcType="BIGINT" />
+    <result column="counterfeit_currency" property="counterfeitCurrency" jdbcType="VARCHAR" />
+    <result column="counterfeit_bottle" property="counterfeitBottle" jdbcType="VARCHAR" />
+    <result column="counterfeit_money" property="counterfeitMoney" jdbcType="INTEGER" />
+    <result column="counterfeit_checkresult" property="counterfeitCheckresult" jdbcType="VARCHAR" />
+    <result column="counterfeit_picture" property="counterfeitPicture" jdbcType="VARCHAR" />
+    <result column="counterfeit_capturename" property="counterfeitCapturename" jdbcType="VARCHAR" />
+    <result column="counterfeit_captureaddress" property="counterfeitCaptureaddress" jdbcType="VARCHAR" />
+    <result column="counterfeit_type" property="counterfeitType" jdbcType="INTEGER" />
+    <result column="counterfeit_capturedate" property="counterfeitCapturedate" jdbcType="BIGINT" />
+    <result column="counterfeit_recycle" property="counterfeitRecycle" jdbcType="INTEGER" />
+     <result column="counterfeit_picName" property="counterfeitPicName" jdbcType="VARCHAR" />
+    <result column="counterfeit_resName" property="counterfeitResName" jdbcType="VARCHAR" />
+    <association property="tbDevice" column="counterfeit_deviceid"
+		select="com.xinda.counterfeit.mapper.TbDeviceMapper.selectByPrimaryKey" /> 
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    counterfeit_id, counterfeit_serialnum, counterfeit_createdate, counterfeit_deviceid, 
+    counterfeit_currency, counterfeit_bottle, counterfeit_money, counterfeit_checkresult, 
+    counterfeit_picture, counterfeit_capturename, counterfeit_captureaddress, counterfeit_type, 
+    counterfeit_capturedate, counterfeit_recycle,counterfeit_picName,counterfeit_resName
+  </sql>
+<!--   <select id="selectList" resultMap="BaseResultMap" parameterType="map"> -->
+<!--   	select <include refid="Base_Column_List" />  -->
+<!--   	from tb_counterfeit -->
+<!--   	<if test="counterfeitSerialnum!=null"> -->
+<!--   		and counterfeit_serialnum like '%#{counterfeitSerialnum}%' -->
+<!--   	</if> -->
+<!--   	<if test="counterfeitCreateBegindate!=null"> -->
+<!--   		and counterfeit_serialnum like '%#{counterfeitSerialnum}%' -->
+<!--   	</if> -->
+<!--   </select> -->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbCounterfeitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_counterfeit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!--任务预警  -->
+	<select id="selectByArea" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	select count(co.counterfeit_id) as counterfeit_id,co.counterfeit_deviceid,co.counterfeit_capturename,co.counterfeit_captureaddress from tb_counterfeit  co left join tb_device d on co.counterfeit_deviceid=d.device_id
+   	<if test="areaName!=null and areaName!=''">
+   	where d.device_address LIKE CONCAT('%','${areaName}','%') 
+   </if>
+   group by d.device_address HAVING count(co.counterfeit_id)>=3 
+   order by counterfeit_createdate desc
+  </select>
+  
+  <!--假币分析  -->
+  <select id="selectCountfeitAnalyze" resultMap="BaseResultMap"  parameterType="Map">
+  		select SUBSTRING(co.counterfeit_captureaddress,1,#{areaLength}) as counterfeit_captureaddress,count(co.counterfeit_id) as counterfeit_id,co.counterfeit_deviceid,co.counterfeit_capturename from tb_counterfeit  co left join tb_device d on co.counterfeit_deviceid=d.device_id
+		<if test="areaName !=null">where counterfeit_captureaddress like CONCAT('%',#{areaName},'%') </if>
+		group by SUBSTRING(co.counterfeit_captureaddress,1,#{areaLength}) 
+   		order by counterfeit_createdate desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_counterfeit
+    where counterfeit_id = #{counterfeitId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_counterfeit
+    where counterfeit_id = #{counterfeitId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.counterfeit.pojo.TbCounterfeitExample" >
+    delete from tb_counterfeit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbCounterfeit" >
+    insert into tb_counterfeit (counterfeit_id, counterfeit_serialnum, 
+      counterfeit_createdate, counterfeit_deviceid, 
+      counterfeit_currency, counterfeit_bottle, 
+      counterfeit_money, counterfeit_checkresult, 
+      counterfeit_picture, counterfeit_capturename, 
+      counterfeit_captureaddress, counterfeit_type, 
+      counterfeit_capturedate, counterfeit_recycle,counterfeit_picName,counterfeit_resName
+      )
+    values (#{counterfeitId,jdbcType=BIGINT}, #{counterfeitSerialnum,jdbcType=VARCHAR}, 
+      #{counterfeitCreatedate,jdbcType=BIGINT}, #{counterfeitDeviceid,jdbcType=BIGINT}, 
+      #{counterfeitCurrency,jdbcType=VARCHAR}, #{counterfeitBottle,jdbcType=VARCHAR}, 
+      #{counterfeitMoney,jdbcType=INTEGER}, #{counterfeitCheckresult,jdbcType=VARCHAR}, 
+      #{counterfeitPicture,jdbcType=VARCHAR}, #{counterfeitCapturename,jdbcType=VARCHAR}, 
+      #{counterfeitCaptureaddress,jdbcType=VARCHAR}, #{counterfeitType,jdbcType=INTEGER}, 
+      #{counterfeitCapturedate,jdbcType=BIGINT}, #{counterfeitRecycle,jdbcType=INTEGER},
+      #{counterfeitPicName,jdbcType=VARCHAR},#{counterfeitResName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbCounterfeit" >
+    insert into tb_counterfeit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="counterfeitId != null" >
+        counterfeit_id,
+      </if>
+      <if test="counterfeitSerialnum != null" >
+        counterfeit_serialnum,
+      </if>
+      <if test="counterfeitCreatedate != null" >
+        counterfeit_createdate,
+      </if>
+      <if test="counterfeitDeviceid != null" >
+        counterfeit_deviceid,
+      </if>
+      <if test="counterfeitCurrency != null" >
+        counterfeit_currency,
+      </if>
+      <if test="counterfeitBottle != null" >
+        counterfeit_bottle,
+      </if>
+      <if test="counterfeitMoney != null" >
+        counterfeit_money,
+      </if>
+      <if test="counterfeitCheckresult != null" >
+        counterfeit_checkresult,
+      </if>
+      <if test="counterfeitPicture != null" >
+        counterfeit_picture,
+      </if>
+      <if test="counterfeitCapturename != null" >
+        counterfeit_capturename,
+      </if>
+      <if test="counterfeitCaptureaddress != null" >
+        counterfeit_captureaddress,
+      </if>
+      <if test="counterfeitType != null" >
+        counterfeit_type,
+      </if>
+      <if test="counterfeitCapturedate != null" >
+        counterfeit_capturedate,
+      </if>
+      <if test="counterfeitRecycle != null" >
+        counterfeit_recycle,
+      </if>
+       <if test="counterfeitPicName != null" >
+        counterfeit_picName,
+      </if>
+      <if test="counterfeitResName != null" >
+        counterfeit_resName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="counterfeitId != null" >
+        #{counterfeitId,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitSerialnum != null" >
+        #{counterfeitSerialnum,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCreatedate != null" >
+        #{counterfeitCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitDeviceid != null" >
+        #{counterfeitDeviceid,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitCurrency != null" >
+        #{counterfeitCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitBottle != null" >
+        #{counterfeitBottle,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitMoney != null" >
+        #{counterfeitMoney,jdbcType=INTEGER},
+      </if>
+      <if test="counterfeitCheckresult != null" >
+        #{counterfeitCheckresult,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitPicture != null" >
+        #{counterfeitPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCapturename != null" >
+        #{counterfeitCapturename,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCaptureaddress != null" >
+        #{counterfeitCaptureaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitType != null" >
+        #{counterfeitType,jdbcType=INTEGER},
+      </if>
+      <if test="counterfeitCapturedate != null" >
+        #{counterfeitCapturedate,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitRecycle != null" >
+        #{counterfeitRecycle,jdbcType=INTEGER},
+      </if>
+       <if test="counterfeitPicName != null" >
+        #{counterfeitPicName,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitResName != null" >
+        #{counterfeitResName,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbCounterfeitExample" resultType="java.lang.Integer" >
+    select count(*) from tb_counterfeit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_counterfeit
+    <set >
+      <if test="record.counterfeitId != null" >
+        counterfeit_id = #{record.counterfeitId,jdbcType=BIGINT},
+      </if>
+      <if test="record.counterfeitSerialnum != null" >
+        counterfeit_serialnum = #{record.counterfeitSerialnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitCreatedate != null" >
+        counterfeit_createdate = #{record.counterfeitCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="record.counterfeitDeviceid != null" >
+        counterfeit_deviceid = #{record.counterfeitDeviceid,jdbcType=BIGINT},
+      </if>
+      <if test="record.counterfeitCurrency != null" >
+        counterfeit_currency = #{record.counterfeitCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitBottle != null" >
+        counterfeit_bottle = #{record.counterfeitBottle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitMoney != null" >
+        counterfeit_money = #{record.counterfeitMoney,jdbcType=INTEGER},
+      </if>
+      <if test="record.counterfeitCheckresult != null" >
+        counterfeit_checkresult = #{record.counterfeitCheckresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitPicture != null" >
+        counterfeit_picture = #{record.counterfeitPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitCapturename != null" >
+        counterfeit_capturename = #{record.counterfeitCapturename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitCaptureaddress != null" >
+        counterfeit_captureaddress = #{record.counterfeitCaptureaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.counterfeitType != null" >
+        counterfeit_type = #{record.counterfeitType,jdbcType=INTEGER},
+      </if>
+      <if test="record.counterfeitCapturedate != null" >
+        counterfeit_capturedate = #{record.counterfeitCapturedate,jdbcType=BIGINT},
+      </if>
+      <if test="record.counterfeitRecycle != null" >
+        counterfeit_recycle = #{record.counterfeitRecycle,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_counterfeit
+    set counterfeit_id = #{record.counterfeitId,jdbcType=BIGINT},
+      counterfeit_serialnum = #{record.counterfeitSerialnum,jdbcType=VARCHAR},
+      counterfeit_createdate = #{record.counterfeitCreatedate,jdbcType=BIGINT},
+      counterfeit_deviceid = #{record.counterfeitDeviceid,jdbcType=BIGINT},
+      counterfeit_currency = #{record.counterfeitCurrency,jdbcType=VARCHAR},
+      counterfeit_bottle = #{record.counterfeitBottle,jdbcType=VARCHAR},
+      counterfeit_money = #{record.counterfeitMoney,jdbcType=INTEGER},
+      counterfeit_checkresult = #{record.counterfeitCheckresult,jdbcType=VARCHAR},
+      counterfeit_picture = #{record.counterfeitPicture,jdbcType=VARCHAR},
+      counterfeit_capturename = #{record.counterfeitCapturename,jdbcType=VARCHAR},
+      counterfeit_captureaddress = #{record.counterfeitCaptureaddress,jdbcType=VARCHAR},
+      counterfeit_type = #{record.counterfeitType,jdbcType=INTEGER},
+      counterfeit_capturedate = #{record.counterfeitCapturedate,jdbcType=BIGINT},
+      counterfeit_recycle = #{record.counterfeitRecycle,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbCounterfeit" >
+    update tb_counterfeit
+    <set >
+      <if test="counterfeitSerialnum != null" >
+        counterfeit_serialnum = #{counterfeitSerialnum,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCreatedate != null" >
+        counterfeit_createdate = #{counterfeitCreatedate,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitDeviceid != null" >
+        counterfeit_deviceid = #{counterfeitDeviceid,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitCurrency != null" >
+        counterfeit_currency = #{counterfeitCurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitBottle != null" >
+        counterfeit_bottle = #{counterfeitBottle,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitMoney != null" >
+        counterfeit_money = #{counterfeitMoney,jdbcType=INTEGER},
+      </if>
+      <if test="counterfeitCheckresult != null" >
+        counterfeit_checkresult = #{counterfeitCheckresult,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitPicture != null" >
+        counterfeit_picture = #{counterfeitPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCapturename != null" >
+        counterfeit_capturename = #{counterfeitCapturename,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitCaptureaddress != null" >
+        counterfeit_captureaddress = #{counterfeitCaptureaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="counterfeitType != null" >
+        counterfeit_type = #{counterfeitType,jdbcType=INTEGER},
+      </if>
+      <if test="counterfeitCapturedate != null" >
+        counterfeit_capturedate = #{counterfeitCapturedate,jdbcType=BIGINT},
+      </if>
+      <if test="counterfeitRecycle != null" >
+        counterfeit_recycle = #{counterfeitRecycle,jdbcType=INTEGER},
+      </if>
+    </set>
+    where counterfeit_id = #{counterfeitId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbCounterfeit" >
+    update tb_counterfeit
+    set counterfeit_serialnum = #{counterfeitSerialnum,jdbcType=VARCHAR},
+      counterfeit_createdate = #{counterfeitCreatedate,jdbcType=BIGINT},
+      counterfeit_deviceid = #{counterfeitDeviceid,jdbcType=BIGINT},
+      counterfeit_currency = #{counterfeitCurrency,jdbcType=VARCHAR},
+      counterfeit_bottle = #{counterfeitBottle,jdbcType=VARCHAR},
+      counterfeit_money = #{counterfeitMoney,jdbcType=INTEGER},
+      counterfeit_checkresult = #{counterfeitCheckresult,jdbcType=VARCHAR},
+      counterfeit_picture = #{counterfeitPicture,jdbcType=VARCHAR},
+      counterfeit_capturename = #{counterfeitCapturename,jdbcType=VARCHAR},
+      counterfeit_captureaddress = #{counterfeitCaptureaddress,jdbcType=VARCHAR},
+      counterfeit_type = #{counterfeitType,jdbcType=INTEGER},
+      counterfeit_capturedate = #{counterfeitCapturedate,jdbcType=BIGINT},
+      counterfeit_recycle = #{counterfeitRecycle,jdbcType=INTEGER}
+    where counterfeit_id = #{counterfeitId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 自定义sql -->
+<!-- 	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" > -->
+<!--     select -->
+<!--     <include refid="Base_Column_List" /> -->
+<!--     from tb_counterfeit tc -->
+<!--     inner join tb_device td on tc.counterfeit_deviceid=td.device_id -->
+<!--     <include refid="selectByConditionWhereClause"/> -->
+<!--     limit #{rows, jdbcType=INTEGER},#{page, jdbcType=INTEGER} -->
+<!--   </select>   -->
+  
+<!--   <select id="selectByConditionCount" resultMap="java.lang.Integer" parameterType="java.util.Map" > -->
+<!--     select count(1) -->
+<!--     from tb_counterfeit tc -->
+<!--     inner join tb_device td on tc.counterfeit_deviceid=td.device_id -->
+<!--     <include refid="selectByConditionWhereClause"/> -->
+<!--   </select>   -->
+  
+  	<!-- 查询条件 -->
+<!-- 	<sql id="selectByConditionWhereClause"> -->
+<!--   	<where> -->
+<!--   		<if test="counterfeitSerialnum != null"> -->
+<!--   			AND tc.counterfeit_serialnum like concat(#{counterfeitSerialnum, jdbcType=VARCHAR}, '%') -->
+<!--   		</if> -->
+<!--   		<if test="deviceBank != null"> -->
+<!--   			AND td.device_bank like concat(#{deviceBank, jdbcType=VARCHAR}, '%') -->
+<!--   		</if> -->
+<!--   	</where> -->
+<!--   </sql> -->
+</mapper>

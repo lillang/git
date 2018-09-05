@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.counterfeit.mapper.TbRightMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.counterfeit.pojo.TbRight" >
+    <id column="right_id" property="rightId" jdbcType="BIGINT" />
+    <result column="right_parentid" property="rightParentid" jdbcType="BIGINT" />
+    <result column="right_name" property="rightName" jdbcType="VARCHAR" />
+    <result column="right_sort" property="rightSort" jdbcType="INTEGER" />
+    <result column="right_menuid" property="rightMenuid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    right_id, right_parentid, right_name, right_sort, right_menuid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xinda.counterfeit.pojo.TbRightExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_right
+    where right_id = #{rightId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_right
+    where right_id = #{rightId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.counterfeit.pojo.TbRightExample" >
+    delete from tb_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.counterfeit.pojo.TbRight" >
+    insert into tb_right (right_id, right_parentid, right_name, 
+      right_sort, right_menuid)
+    values (#{rightId,jdbcType=BIGINT}, #{rightParentid,jdbcType=BIGINT}, #{rightName,jdbcType=VARCHAR}, 
+      #{rightSort,jdbcType=INTEGER}, #{rightMenuid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.counterfeit.pojo.TbRight" >
+    insert into tb_right
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rightId != null" >
+        right_id,
+      </if>
+      <if test="rightParentid != null" >
+        right_parentid,
+      </if>
+      <if test="rightName != null" >
+        right_name,
+      </if>
+      <if test="rightSort != null" >
+        right_sort,
+      </if>
+      <if test="rightMenuid != null" >
+        right_menuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rightId != null" >
+        #{rightId,jdbcType=BIGINT},
+      </if>
+      <if test="rightParentid != null" >
+        #{rightParentid,jdbcType=BIGINT},
+      </if>
+      <if test="rightName != null" >
+        #{rightName,jdbcType=VARCHAR},
+      </if>
+      <if test="rightSort != null" >
+        #{rightSort,jdbcType=INTEGER},
+      </if>
+      <if test="rightMenuid != null" >
+        #{rightMenuid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.counterfeit.pojo.TbRightExample" resultType="java.lang.Integer" >
+    select count(*) from tb_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_right
+    <set >
+      <if test="record.rightId != null" >
+        right_id = #{record.rightId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rightParentid != null" >
+        right_parentid = #{record.rightParentid,jdbcType=BIGINT},
+      </if>
+      <if test="record.rightName != null" >
+        right_name = #{record.rightName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rightSort != null" >
+        right_sort = #{record.rightSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.rightMenuid != null" >
+        right_menuid = #{record.rightMenuid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_right
+    set right_id = #{record.rightId,jdbcType=BIGINT},
+      right_parentid = #{record.rightParentid,jdbcType=BIGINT},
+      right_name = #{record.rightName,jdbcType=VARCHAR},
+      right_sort = #{record.rightSort,jdbcType=INTEGER},
+      right_menuid = #{record.rightMenuid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.counterfeit.pojo.TbRight" >
+    update tb_right
+    <set >
+      <if test="rightParentid != null" >
+        right_parentid = #{rightParentid,jdbcType=BIGINT},
+      </if>
+      <if test="rightName != null" >
+        right_name = #{rightName,jdbcType=VARCHAR},
+      </if>
+      <if test="rightSort != null" >
+        right_sort = #{rightSort,jdbcType=INTEGER},
+      </if>
+      <if test="rightMenuid != null" >
+        right_menuid = #{rightMenuid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where right_id = #{rightId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.counterfeit.pojo.TbRight" >
+    update tb_right
+    set right_parentid = #{rightParentid,jdbcType=BIGINT},
+      right_name = #{rightName,jdbcType=VARCHAR},
+      right_sort = #{rightSort,jdbcType=INTEGER},
+      right_menuid = #{rightMenuid,jdbcType=BIGINT}
+    where right_id = #{rightId,jdbcType=BIGINT}
+  </update>
+</mapper>
